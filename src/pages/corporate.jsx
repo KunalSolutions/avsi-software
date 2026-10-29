@@ -1,4 +1,3 @@
-
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
@@ -26,34 +25,33 @@ import TaskProjectManagementSlide from "../components/TaskProjectManagementSlide
 import ExpenseManagementSlide from "../components/ExpenseManagementSlide";
 import CustomizedWorkspaceSlide from "../components/CustomizedWorkspaceSlide";
 
-import { ArrowLeft, ChevronLeft, ChevronRight, Presentation } from "lucide-react";
+import {
+  ArrowLeft,
+  ChevronLeft,
+  ChevronRight,
+  Presentation,
+} from "lucide-react";
 
 const slides = [
   { title: "Cover", component: ERPCoverSlide },
   { title: "About us", component: AboutUs },
   { title: "Business Challenges", component: BusinessChallenges },
   { title: "Our ERP Solution", component: ERPSolution },
-
   { title: "ERP Dashboard", component: ERPDashboardSlide },
-  { title: "inventoryFeatures", component: inventoryFeatures },
-  { title: "CustomerManagementSlide", component: CustomerManagementSlide },
-  { title: "VendorManagementSlide", component: VendorManagementSlide },
-  { title: "EmployeeManagementSlide", component: EmployeeManagementSlide },
-  { title: "SalesQuotationSlide", component: SalesQuotationSlide },
-  { title: "ReportingSlide", component: ReportingSlide },
-  { title: "BusinessTrackingSlide", component: BusinessTrackingSlide },
-  { title: "MeetingWorkspaceSlide", component: MeetingWorkspaceSlide },
-  { title: "WorkChatSlide", component: WorkChatSlide },
-
-  { title: "AMCRenewalsSlide", component: AMCRenewalsSlide },
-  { title: "TaskProjectManagementSlide", component: TaskProjectManagementSlide },
-  { title: "ExpenseManagementSlide", component: ExpenseManagementSlide },
-  { title: "CustomizedWorkspaceSlide", component: CustomizedWorkspaceSlide },
-
+  { title: "Inventory Features", component: inventoryFeatures },
+  { title: "Customer Management", component: CustomerManagementSlide },
+  { title: "Vendor Management", component: VendorManagementSlide },
+  { title: "Employee Management", component: EmployeeManagementSlide },
+  { title: "Sales & Quotations", component: SalesQuotationSlide },
+  { title: "Reporting", component: ReportingSlide },
+  { title: "Business Tracking", component: BusinessTrackingSlide },
+  { title: "Meeting Workspace", component: MeetingWorkspaceSlide },
+  { title: "WorkChat", component: WorkChatSlide },
+  { title: "AMC Renewals", component: AMCRenewalsSlide },
+  { title: "Task & Project Management", component: TaskProjectManagementSlide },
+  { title: "Expense Management", component: ExpenseManagementSlide },
+  { title: "Customized Workspace", component: CustomizedWorkspaceSlide },
   { title: "ERP Comparison", component: ERPComparison },
-  // { title: "ERP Modules & Capabilities", component: ERPModules },
-  // { title: "Key Business Benefits", component: KeyBusinessBenefits },
-  // { title: "Our Implementation Process", component: ERPImplementationProcess },
   { title: "Let's Build Your ERP", component: ERPClosingSlide },
 ];
 
@@ -78,6 +76,7 @@ export default function CorporateERP() {
       setDirection(index > currentSlide ? 1 : -1);
       setIsAnimating(true);
       setCurrentSlide(index);
+
       window.setTimeout(() => setIsAnimating(false), 650);
     },
     [currentSlide, isAnimating]
@@ -100,7 +99,7 @@ export default function CorporateERP() {
     try {
       await document.documentElement.requestFullscreen();
     } catch {
-      // Presentation works without fullscreen.
+      // Presentation remains available without fullscreen.
     }
   };
 
@@ -119,7 +118,9 @@ export default function CorporateERP() {
 
     const handleKeyDown = (event) => {
       if (event.key === "Escape") {
-        if (!document.fullscreenElement) setPresentationMode(false);
+        if (!document.fullscreenElement) {
+          setPresentationMode(false);
+        }
         return;
       }
 
@@ -146,8 +147,12 @@ export default function CorporateERP() {
     };
 
     document.addEventListener("fullscreenchange", handleFullscreenChange);
+
     return () =>
-      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+      document.removeEventListener(
+        "fullscreenchange",
+        handleFullscreenChange
+      );
   }, []);
 
   const SlideComponent = slides[currentSlide].component;
@@ -155,34 +160,34 @@ export default function CorporateERP() {
   if (presentationMode) {
     return (
       <main className="fixed inset-0 z-50 flex flex-col overflow-hidden bg-[#e9e9ef]">
-        <header className="flex h-12 shrink-0 items-center justify-between bg-white px-5">
+        <header className="z-10 flex h-11 shrink-0 items-center justify-between gap-2 bg-white px-3 sm:h-12 sm:px-5">
           <button
             onClick={exitPresentation}
-            className="flex items-center gap-2 text-sm font-medium text-slate-600"
+            className="flex shrink-0 items-center gap-1.5 text-xs font-medium text-slate-600 hover:text-[#232466] sm:gap-2 sm:text-sm"
           >
             <ArrowLeft size={18} />
             Exit
           </button>
 
-          <p className="text-sm font-semibold text-[#232466]">
+          <p className="min-w-0 flex-1 truncate text-center text-xs font-semibold text-[#232466] sm:text-sm">
             {slides[currentSlide].title}
           </p>
 
-          <span className="text-xs text-slate-500">
-            {currentSlide + 1} / {slides.length}
+          <span className="shrink-0 text-[10px] text-slate-500 sm:text-xs">
+            {currentSlide + 1}/{slides.length}
           </span>
         </header>
 
-        <section className="flex min-h-0 flex-1 items-center justify-center">
+        <section className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto lg:flex lg:items-center lg:justify-center lg:overflow-hidden">
           <div
             key={currentSlide}
-            className="w-full max-w-[1440px] overflow-hidden bg-white shadow-2xl"
+            className="relative min-h-[calc(100dvh-6.5rem)] w-full min-w-0 overflow-x-hidden bg-white shadow-2xl sm:min-h-[calc(100dvh-7rem)] lg:min-h-0 lg:aspect-[16/9] lg:max-h-full lg:max-w-[1440px]"
             style={{
-              aspectRatio: "16 / 9",
-              animation:
-                direction === 1
+              animation: isAnimating
+                ? direction === 1
                   ? "pageForward 650ms ease both"
-                  : "pageBackward 650ms ease both",
+                  : "pageBackward 650ms ease both"
+                : "none",
               transformOrigin: direction === 1 ? "left center" : "right center",
               backfaceVisibility: "hidden",
             }}
@@ -191,25 +196,26 @@ export default function CorporateERP() {
           </div>
         </section>
 
-        <footer className="flex h-14 shrink-0 items-center justify-center gap-5 bg-white">
+        <footer className="z-10 flex h-12 shrink-0 items-center justify-center gap-2 bg-white px-2 sm:h-14 sm:gap-5 sm:px-4">
           <button
             onClick={previousSlide}
             disabled={currentSlide === 0 || isAnimating}
-            className="rounded-full p-2 text-[#232466] transition hover:bg-slate-100 disabled:opacity-30"
+            className="shrink-0 rounded-full p-2 text-[#232466] transition hover:bg-slate-100 disabled:opacity-30"
             aria-label="Previous slide"
           >
-            <ChevronLeft size={23} />
+            <ChevronLeft size={22} />
           </button>
 
-          <div className="flex items-center gap-1.5">
+          <div className="flex max-w-[65vw] items-center gap-1 overflow-x-auto px-1 py-2 sm:max-w-none sm:gap-1.5">
             {slides.map((slide, index) => (
               <button
                 key={slide.title}
                 onClick={() => goToSlide(index)}
                 aria-label={`Go to ${slide.title}`}
-                className={`h-1.5 rounded-full transition-all ${
+                aria-current={index === currentSlide ? "step" : undefined}
+                className={`h-1.5 shrink-0 rounded-full transition-all ${
                   index === currentSlide
-                    ? "w-7 bg-[#EF5622]"
+                    ? "w-5 bg-[#EF5622] sm:w-7"
                     : "w-1.5 bg-slate-300 hover:bg-slate-400"
                 }`}
               />
@@ -219,10 +225,10 @@ export default function CorporateERP() {
           <button
             onClick={nextSlide}
             disabled={currentSlide === slides.length - 1 || isAnimating}
-            className="rounded-full p-2 text-[#232466] transition hover:bg-slate-100 disabled:opacity-30"
+            className="shrink-0 rounded-full p-2 text-[#232466] transition hover:bg-slate-100 disabled:opacity-30"
             aria-label="Next slide"
           >
-            <ChevronRight size={23} />
+            <ChevronRight size={22} />
           </button>
         </footer>
 
@@ -250,9 +256,16 @@ export default function CorporateERP() {
           }
 
           @media (prefers-reduced-motion: reduce) {
-            [style*="pageForward"],
-            [style*="pageBackward"] {
+            * {
               animation: none !important;
+              scroll-behavior: auto !important;
+            }
+          }
+
+          @media (max-width: 1023px) {
+            .presentation-slide-content {
+              min-width: 0;
+              max-width: 100%;
             }
           }
         `}</style>
@@ -261,38 +274,40 @@ export default function CorporateERP() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-100">
-      <header className="sticky top-0 z-30 flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3 sm:px-8">
+    <main className="min-h-screen overflow-x-hidden bg-slate-100">
+      <header className="sticky top-0 z-30 flex min-h-14 items-center justify-between gap-2 border-b border-slate-200 bg-white px-3 py-2 sm:min-h-16 sm:px-8">
         <button
           onClick={() => navigate("/")}
-          className="flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-[#232466]"
+          className="flex shrink-0 items-center gap-1.5 text-xs font-medium text-slate-600 hover:text-[#232466] sm:gap-2 sm:text-sm"
         >
           <ArrowLeft size={18} />
           Home
         </button>
 
-        <div className="text-center">
-          <h1 className="text-sm font-bold text-[#232466] sm:text-base">
+        <div className="min-w-0 text-center">
+          <h1 className="truncate text-sm font-bold text-[#232466] sm:text-base">
             Corporate ERP
           </h1>
-          <p className="text-xs text-slate-500">Solution Overview</p>
+          <p className="text-[10px] text-slate-500 sm:text-xs">
+            Solution Overview
+          </p>
         </div>
 
         <button
           onClick={startPresentation}
-          className="flex items-center gap-2 rounded-lg bg-[#232466] px-3 py-2 text-xs font-semibold text-white sm:px-5 sm:text-sm"
+          className="flex shrink-0 items-center gap-1.5 rounded-lg bg-[#232466] px-3 py-2 text-xs font-semibold text-white transition hover:bg-[#30318a] sm:gap-2 sm:px-5 sm:text-sm"
         >
-          <Presentation size={17} />
+          <Presentation size={16} />
           <span className="hidden sm:inline">Start Presentation</span>
           <span className="sm:hidden">Present</span>
         </button>
       </header>
 
-      <section className="mx-auto max-w-[1500px] space-y-6 px-3 py-6 sm:px-6 lg:px-10">
+      <section className="mx-auto flex w-full max-w-[1500px] flex-col gap-4 px-2 py-4 sm:gap-6 sm:px-6 sm:py-6 lg:px-10">
         {slides.map(({ title, component: Component }) => (
           <article
             key={title}
-            className="overflow-hidden bg-white shadow-sm ring-1 ring-slate-200"
+            className="w-full min-w-0 overflow-hidden bg-white shadow-sm ring-1 ring-slate-200"
           >
             <Component />
           </article>
@@ -301,7 +316,7 @@ export default function CorporateERP() {
 
       <button
         onClick={startPresentation}
-        className="fixed bottom-5 right-5 z-20 flex items-center gap-2 rounded-full bg-[#EF5622] px-5 py-3 text-sm font-bold text-white shadow-lg hover:bg-orange-600"
+        className="fixed bottom-4 right-4 z-20 flex items-center gap-2 rounded-full bg-[#EF5622] px-4 py-3 text-xs font-bold text-white shadow-lg transition hover:bg-orange-600 sm:bottom-5 sm:right-5 sm:px-5 sm:text-sm"
       >
         <Presentation size={18} />
         Present
