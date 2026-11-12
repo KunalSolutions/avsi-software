@@ -9,12 +9,12 @@ const presentations = [
     icon: Building2,
     path: "/presentations/corporate",
   },
-  // {
-  //   title: "College ERP",
-  //   description: "Academic administration, students, attendance and fees.",
-  //   icon: GraduationCap,
-  //   path: "/presentations/college",
-  // },
+  {
+    title: "College ERP",
+    description: "Academic administration, students, attendance and fees.",
+    icon: GraduationCap,
+    path: "/presentations/college",
+  },
   // {
   //   title: "Healthcare ERP",
   //   description: "Explore management solutions for healthcare organizations.",

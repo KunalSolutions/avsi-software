@@ -25,6 +25,8 @@ import TaskProjectManagementSlide from "../components/TaskProjectManagementSlide
 import ExpenseManagementSlide from "../components/ExpenseManagementSlide";
 import CustomizedWorkspaceSlide from "../components/CustomizedWorkspaceSlide";
 
+import SlideImageExport from "../components/SlideImageExport";
+
 import {
   ArrowLeft,
   ChevronLeft,
@@ -38,16 +40,19 @@ const slides = [
   { title: "Business Challenges", component: BusinessChallenges },
   { title: "Our ERP Solution", component: ERPSolution },
   { title: "ERP Dashboard", component: ERPDashboardSlide },
+
   { title: "Inventory Features", component: inventoryFeatures },
   { title: "Customer Management", component: CustomerManagementSlide },
   { title: "Vendor Management", component: VendorManagementSlide },
   { title: "Employee Management", component: EmployeeManagementSlide },
   { title: "Sales & Quotations", component: SalesQuotationSlide },
+
   { title: "Reporting", component: ReportingSlide },
   { title: "Business Tracking", component: BusinessTrackingSlide },
   { title: "Meeting Workspace", component: MeetingWorkspaceSlide },
   { title: "WorkChat", component: WorkChatSlide },
   { title: "AMC Renewals", component: AMCRenewalsSlide },
+
   { title: "Task & Project Management", component: TaskProjectManagementSlide },
   { title: "Expense Management", component: ExpenseManagementSlide },
   { title: "Customized Workspace", component: CustomizedWorkspaceSlide },
@@ -56,6 +61,35 @@ const slides = [
 ];
 
 export default function CorporateERP() {
+  const [isPrinting, setIsPrinting] = useState(false);
+
+  useEffect(() => {
+    if (!isPrinting) return;
+
+    const exportPDF = async () => {
+      await document.fonts.ready;
+
+      const images = [...document.querySelectorAll(".pdf-export-root img")];
+
+      await Promise.all(
+        images.map((img) =>
+          img.complete ? Promise.resolve() : new Promise((resolve) => {
+            img.onload = resolve;
+            img.onerror = resolve;
+          })
+        )
+      );
+
+      window.print();
+    };
+
+    exportPDF();
+
+    const handleAfterPrint = () => setIsPrinting(false);
+    window.addEventListener("afterprint", handleAfterPrint);
+
+    return () => window.removeEventListener("afterprint", handleAfterPrint);
+  }, [isPrinting]);
   const navigate = useNavigate();
   const [presentationMode, setPresentationMode] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -273,6 +307,18 @@ export default function CorporateERP() {
     );
   }
 
+  if (isPrinting) {
+    return (
+      <main className="pdf-export-root">
+        {slides.map(({ title, component: Component }) => (
+          <article key={title} className="pdf-slide">
+            <Component />
+          </article>
+        ))}
+      </main>
+    );
+  }
+
   return (
     <main className="min-h-screen overflow-x-hidden bg-slate-100">
       <header className="sticky top-0 z-30 flex min-h-14 items-center justify-between gap-2 border-b border-slate-200 bg-white px-3 py-2 sm:min-h-16 sm:px-8">
@@ -282,6 +328,13 @@ export default function CorporateERP() {
         >
           <ArrowLeft size={18} />
           Home
+        </button>
+
+        <button
+          onClick={() => setIsPrinting(true)}
+          className="rounded-lg bg-[#EF5622] px-4 py-2 text-sm font-semibold text-white"
+        >
+          Download PDF
         </button>
 
         <div className="min-w-0 text-center">
@@ -304,14 +357,27 @@ export default function CorporateERP() {
       </header>
 
       <section className="mx-auto flex w-full max-w-[1500px] flex-col gap-4 px-2 py-4 sm:gap-6 sm:px-6 sm:py-6 lg:px-10">
-        {slides.map(({ title, component: Component }) => (
+        {slides.map(({ title, component: Component }) => {
+        const id = title.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+
+        return (
           <article
-            key={title}
+            key={id}
             className="w-full min-w-0 overflow-hidden bg-white shadow-sm ring-1 ring-slate-200"
           >
-            <Component />
+            <div id={id} className="w-full">
+              <Component />
+            </div>
+
+            <div className="flex justify-end border-t bg-white p-3">
+              <SlideImageExport
+                targetId={id}
+                filename={id}
+              />
+            </div>
           </article>
-        ))}
+        );
+      })}
       </section>
 
       <button
